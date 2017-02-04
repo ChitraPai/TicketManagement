@@ -23,15 +23,16 @@ public class TestEmployeeDAO {
 		// employee.setEmailId("david@gmail");
 		// employee.setPassword("aaccbb");
 		// employeeDAO.save(employee);
-		List<Employee> listAll = employeeDAO.listAll();
-		Iterator<Employee> i = listAll.iterator();
-		while (i.hasNext()) {
-			Employee emp = (Employee) i.next();
-			System.out.println(emp.getId() + "\t" + emp.getDepartmentId().getId() + "\t" + emp.getRoleId().getId()
-					+ "\t" + emp.getName() + "\t" + emp.getEmailId() + "\t" + emp.getPassword() + "\t"
-					+ emp.getActive());
+//		List<Employee> listAll = employeeDAO.listAll();
+//		Iterator<Employee> i = listAll.iterator();
+//		while (i.hasNext()) {
+//			Employee emp = (Employee) i.next();
+//			System.out.println(emp.getId() + "\t" + emp.getDepartmentId().getId() + "\t" + emp.getRoleId().getId()
+//					+ "\t" + emp.getName() + "\t" + emp.getEmailId() + "\t" + emp.getPassword() + "\t"
+//					+ emp.getActive());
 
-		}
+//		}
+		System.out.println(employeeDAO.retreiveRoleNameforEmployee(3));
 
 	}
 

@@ -3,6 +3,7 @@ package com.revature.dao;
 import java.util.List;
 
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.revature.exception.PersistenceException;
@@ -51,14 +52,18 @@ public class DepartmentDAO implements DAO<Department> {
 		});
 	}
 
-	public Department retrieveDepartmentId(String name) {
-		String sql = "select id from departments where name=?";
-		Object[] params = { name };
-		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> {
-			Department department = new Department();
-			department.setId(rs.getInt("id"));
-			return department;
-		});
+	public Department retrieveDepartmentId(String name) throws PersistenceException {
+		try {
+			String sql = "select id from departments where name=?";
+			Object[] params = { name };
+			return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> {
+				Department department = new Department();
+				department.setId(rs.getInt("id"));
+				return department;
+			});
+		} catch (EmptyResultDataAccessException e) {
+			throw new PersistenceException("Given department name doesnt exist", e);
+		}
 
 	}
 }

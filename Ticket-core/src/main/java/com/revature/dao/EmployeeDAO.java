@@ -64,4 +64,15 @@ public class EmployeeDAO implements DAO<Employee> {
 
 	}
 
+	public int retrieveEmployeeIdForDepartment(int deptId) {
+		String sql = "select id from employees where department_id=? and role_id=2 limit 1";
+		Object[] params = { deptId };
+		return jdbcTemplate.queryForObject(sql, params, Integer.class);
+	}
+	
+	public String retreiveRoleNameforEmployee(int employeeId){
+		String sql="select roles.name from roles join employees on roles.id=employees.role_id where employees.id=?";
+		Object [] params={employeeId};
+		return jdbcTemplate.queryForObject(sql,params,String.class);
+	}
 }

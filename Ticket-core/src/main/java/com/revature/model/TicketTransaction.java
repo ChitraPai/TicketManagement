@@ -10,6 +10,7 @@ public class TicketTransaction {
 	private User userId;
 	private String subject;
 	private String description;
+	private Priority priorityId;
 	private LocalDateTime createdDate;
 	private Department departmentId;
 	private Employee assignedEmployeeId;
