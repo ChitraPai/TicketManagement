@@ -32,7 +32,8 @@ public class TestEmployeeDAO {
 //					+ emp.getActive());
 
 //		}
-		System.out.println(employeeDAO.retreiveRoleNameforEmployee(3));
+//		System.out.println(employeeDAO.retreiveRoleNameforEmployee(3));
+//		System.out.println(employeeDAO.retrieveEmployeeId("david@gmail"));
 
 	}
 

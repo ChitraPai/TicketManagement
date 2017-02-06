@@ -10,12 +10,12 @@ public class TestUserDAO {
 	public static void main(String[] args) throws PersistenceException {
 		User user = new User();
 		UserDAO userDAO = new UserDAO();
-		// user.setName("Priya");
-		// user.setEmailId("priya@gmail");
-		// user.setPassword("12abc45");
-		// userDAO.save(user);
-		user.setId(7);
-		userDAO.updateAsInactive(user);
+		user.setName("Rahul");
+		 user.setEmailId("rahul@gmail");
+		 user.setPassword("aabbccdd");
+		 userDAO.save(user);
+//		user.setId(7);
+//		userDAO.updateAsInactive(user);
 		// user.setEmailId("priya@");
 		// user.setPassword("aaaa");
 		// userDAO.update(user);

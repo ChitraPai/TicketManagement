@@ -13,6 +13,7 @@ public class TestTicketCreationDAO {
 //ticDAO.viewTickets("aiswarya@gmail", "123abc");
 //		ticDAO.ticketUpdation("aiswarya@gmail", "123abc", 2,"salary slip is required for submission");
 //		ticDAO.closeTicket("aiswarya@gmail", "123abc", 2);
+		System.out.println(ticDAO.ticketCreation("rashik@gmail", "aabbcc","Hike in salary","Hike in salary is requested", "HR department","high"));
 		
 		
 		

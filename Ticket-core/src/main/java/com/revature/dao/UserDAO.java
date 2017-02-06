@@ -21,13 +21,13 @@ public class UserDAO implements DAO<User> {
 			String sql = "Insert into users(name,email_id,password) values(?,?,?)";
 			Object[] params = { user.getName(), user.getEmailId(), user.getPassword() };
 			jdbcTemplate.update(sql, params);
-		} catch (DuplicateKeyException  e) {
+		} catch (DuplicateKeyException e) {
 			throw new PersistenceException("Given email id already exists", e);
-		}
-		catch(DataIntegrityViolationException e)
-		{
-			throw new PersistenceException("Given email id has already been registered ", e);
-		}
+		
+		} 
+//			catch (DataIntegrityViolationException e) {
+//			throw new PersistenceException("Given email id has already been registered ", e);
+//		}
 	}
 
 	@Override
@@ -72,17 +72,13 @@ public class UserDAO implements DAO<User> {
 
 	}
 
-	public User retrieveUserId(String emailId) throws PersistenceException {
+	public Integer retrieveUserId(String emailId,String password) throws PersistenceException {
 		try {
-			String sql = "select id from users where email_id=?";
-			Object[] params = { emailId };
-			return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> {
-				User user = new User();
-				user.setId(rs.getInt("id"));
-				return user;
-			});
-		} catch (EmptyResultDataAccessException e) {
-			throw new PersistenceException("Given email id doesnt exist", e);
+			String sql = "select id from users where email_id=? and password=?";
+			Object[] params = { emailId,password};
+			return jdbcTemplate.queryForObject(sql, params, Integer.class);
+				} catch (EmptyResultDataAccessException e) {
+			throw new PersistenceException("Given email id or password is incorrect", e);
 		}
 	}
 

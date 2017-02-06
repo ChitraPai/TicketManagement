@@ -6,7 +6,8 @@ public class TestLoginDAO {
 
 	public static void main(String[] args) throws PersistenceException {
 		LoginDAO loginDAO = new LoginDAO();
-		System.out.println(loginDAO.login("chitra", "12345"));
+		System.out.println(loginDAO.loginForUser("chitra@gmail", "123"));
+//		System.out.println(loginDAO.loginForEmployee("david@gmail", "aaccbb"));
 	}
 
 }

@@ -24,13 +24,14 @@ public class TestTicketTransactionDAO {
 //		 tic.getStatus());
 //
 //		 }
-		ticket.setId(1);
-		List<TicketTransaction> list = ticketDAO.listByUserId(1);
-		 Iterator<TicketTransaction> i = list.iterator();
-		 while (i.hasNext()) {
-		 TicketTransaction tic = (TicketTransaction) i.next();
-		 System.out.println( tic.getSubject() + "\t"+ tic.getDescription() + "\t" + tic.getCreatedDate().toLocalDate() + "\t" +
- tic.getStatus());
-	}
+//		ticket.setId(1);
+//		List<TicketTransaction> list = ticketDAO.listByUserId(1);
+//		 Iterator<TicketTransaction> i = list.iterator();
+//		 while (i.hasNext()) {
+//		 TicketTransaction tic = (TicketTransaction) i.next();
+//		 System.out.println( tic.getSubject() + "\t"+ tic.getDescription() + "\t" + tic.getCreatedDate().toLocalDate() + "\t" +
+// tic.getStatus());
+//	}
+//		System.out.println(ticketDAO.getEmployeeIdForTicket(14));
 	}
 }

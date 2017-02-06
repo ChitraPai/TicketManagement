@@ -3,6 +3,7 @@ package com.revature.dao;
 import java.util.List;
 
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.revature.exception.PersistenceException;
@@ -64,15 +65,34 @@ public class EmployeeDAO implements DAO<Employee> {
 
 	}
 
-	public int retrieveEmployeeIdForDepartment(int deptId) {
-		String sql = "select id from employees where department_id=? and role_id=2 limit 1";
-		Object[] params = { deptId };
-		return jdbcTemplate.queryForObject(sql, params, Integer.class);
+	public Integer retrieveEmployeeId(String emailId, String password) throws PersistenceException {
+		try {
+			String sql = "select id from employees where email_id=? and password=?";
+			Object[] params = { emailId, password };
+			return jdbcTemplate.queryForObject(sql, params, Integer.class);
+		} catch (EmptyResultDataAccessException e) {
+			throw new PersistenceException("Given email id or password is incorrect", e);
+		}
+
 	}
-	
-	public String retreiveRoleNameforEmployee(int employeeId){
-		String sql="select roles.name from roles join employees on roles.id=employees.role_id where employees.id=?";
-		Object [] params={employeeId};
-		return jdbcTemplate.queryForObject(sql,params,String.class);
+
+	public int retrieveEmployeeIdForDepartment(int deptId) throws PersistenceException {
+		try {
+			String sql = "select id from employees where department_id=? and role_id=2 limit 1";
+			Object[] params = { deptId };
+			return jdbcTemplate.queryForObject(sql, params, Integer.class);
+		} catch (EmptyResultDataAccessException e) {
+			throw new PersistenceException("Given department id doesnt exist", e);
+		}
+	}
+
+	public String retreiveRoleNameforEmployee(int employeeId) throws PersistenceException {
+		try {
+			String sql = "select roles.name from roles join employees on roles.id=employees.role_id where employees.id=?";
+			Object[] params = { employeeId };
+			return jdbcTemplate.queryForObject(sql, params, String.class);
+		} catch (EmptyResultDataAccessException e) {
+			throw new PersistenceException("Given employee id does not exist", e);
+		}
 	}
 }

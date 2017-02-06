@@ -6,13 +6,17 @@ import com.revature.model.User;
 public class LoginDAO {
 	User user = new User();
 	UserDAO userDAO = new UserDAO();
+	EmployeeDAO employeeDAO = new EmployeeDAO();
 
-	public boolean login(String emailId, String password) throws PersistenceException {
-
-		if (userDAO.retrievePassword(emailId).equals(password)) {
+	public boolean loginForUser(String emailId, String password) throws PersistenceException {
+		userDAO.retrieveUserId(emailId, password);
 			return true;
-		}
-
-		return false;
+			}
+	
+	public boolean loginForEmployee(String emailId, String password) throws PersistenceException{
+		employeeDAO.retrieveEmployeeId(emailId, password);
+			return true;
+		
 	}
-}
+	}
+

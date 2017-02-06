@@ -4,8 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.revature.exception.PersistenceException;
 import com.revature.model.Department;
 import com.revature.model.Employee;
 import com.revature.model.Priority;
@@ -46,11 +48,14 @@ public class TicketTransactionDAO {
 		return ticket;
 	}
 
-	public String getStatusForId(int ticketId) {
-		String sql = "select status from ticket_transactions where id=?";
-		Object[] params = { ticketId };
-		return jdbcTemplate.queryForObject(sql, params, String.class);
-
+	public String getStatusForId(int ticketId) throws PersistenceException {
+		try {
+			String sql = "select status from ticket_transactions where id=?";
+			Object[] params = { ticketId };
+			return jdbcTemplate.queryForObject(sql, params, String.class);
+		} catch (EmptyResultDataAccessException e) {
+			throw new PersistenceException("Given Ticket Id does not exist",e);
+		}
 	}
 
 	public List<TicketTransaction> listByUserId(int id) {
@@ -76,9 +81,14 @@ public class TicketTransactionDAO {
 		return ticketView(id, sql);
 	}
 
-	public int getDepartmentForTicket(int ticketId) {
-		String sql = "select department_id from ticket_transactions where id=?";
-		Object[] params = { ticketId };
-		return jdbcTemplate.queryForObject(sql, params, Integer.class);
+	public int getEmployeeIdForTicket(int ticketId) throws PersistenceException {
+		try {
+			String sql = "select assigned_employee_id from ticket_transactions where id=?";
+			Object[] params = { ticketId };
+			return jdbcTemplate.queryForObject(sql, params, Integer.class);
+		} catch (EmptyResultDataAccessException e) {
+			throw new PersistenceException("Given Ticket Id does not exist",e);
+		}
+
 	}
 }
