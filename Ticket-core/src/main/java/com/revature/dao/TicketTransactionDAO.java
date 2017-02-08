@@ -81,13 +81,26 @@ public class TicketTransactionDAO {
 		return ticketView(id, sql);
 	}
 
-	public int getEmployeeIdForTicket(int ticketId) throws PersistenceException {
+	public TicketTransaction listByTicketId(int ticketId) throws PersistenceException {
 		try {
-			String sql = "select assigned_employee_id from ticket_transactions where id=?";
+			String sql = "select * from ticket_transactions where id=?";
 			Object[] params = { ticketId };
-			return jdbcTemplate.queryForObject(sql, params, Integer.class);
+			return  jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> convert(rs));
 		} catch (EmptyResultDataAccessException e) {
 			throw new PersistenceException("Given Ticket Id does not exist",e);
+		}
+
+	}
+	
+	
+	public Integer retrieveTicketId(int userId, String subject, String description,
+			Integer departmentId, Integer priorityId) throws PersistenceException{
+		try {
+		String sql = "select id from ticket_transactions where user_id=? and subject=? and description=? and department_id=? and priority_id=?";
+		Object[] params = { userId,subject,description,departmentId,priorityId };		
+		return jdbcTemplate.queryForObject(sql,params,Integer.class);
+		} catch (EmptyResultDataAccessException e) {
+			throw new PersistenceException("Invalid credentials",e);
 		}
 
 	}

@@ -61,11 +61,11 @@ public class UserDAO implements DAO<User> {
 		});
 	}
 
-	public String retrievePassword(String emailId) throws PersistenceException {
+	public Integer getUserIdForEmail(String emailId) throws PersistenceException {
 		try {
-			String sql = "select password from users where email_id=?";
+			String sql = "select id from users where email_id=?";
 			Object[] params = { emailId };
-			return jdbcTemplate.queryForObject(sql, params, String.class);
+			return jdbcTemplate.queryForObject(sql, params, Integer.class);
 		} catch (EmptyResultDataAccessException e) {
 			throw new PersistenceException("Given email id doesnt exist", e);
 		}
@@ -81,5 +81,13 @@ public class UserDAO implements DAO<User> {
 			throw new PersistenceException("Given email id or password is incorrect", e);
 		}
 	}
-
+   public String getEmailForUserId(Integer id) throws PersistenceException{
+	   try {
+			String sql = "select email_id from users where id=?";
+			Object[] params = { id };
+			return jdbcTemplate.queryForObject(sql, params, String.class);
+				} catch (EmptyResultDataAccessException e) {
+			throw new PersistenceException("Given id is incorrect", e);
+		}
+   }
 }

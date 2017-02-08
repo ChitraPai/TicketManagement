@@ -36,9 +36,12 @@ public class TestUserService {
 //		employee.setPassword("aabb");
 //		userService.registerForEmployee(employee);
 //userService.loginForUser("chitrapaij@gmail.com", "12345");
-		userService.loginForEmployee("jhonson@gma.com","aabb");
-
-
+//		userService.loginForEmployee("jhonson@gma.com","aabb");
+		
+//userService.loginForUser("aacc", "123");
+		
+		TicketService ticketService=new TicketService();
+ticketService.ticketCreation("chitrapaij@gmail.com", "Wifi connectivity","laptop not getting connected", "Finance","Medium");
 	}
 
 }

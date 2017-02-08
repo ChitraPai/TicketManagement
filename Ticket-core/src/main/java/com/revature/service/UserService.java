@@ -12,21 +12,22 @@ import com.revature.validator.UserValidator;
 
 public class UserService {
 	private UserDAO userDAO = new UserDAO();
-	private EmployeeDAO employeeDAO=new EmployeeDAO();
+	private EmployeeDAO employeeDAO = new EmployeeDAO();
 	private LoginDAO loginDAO = new LoginDAO();
-	
 
-	public void registerForUser(User user) throws ServiceException {
+	public boolean registerForUser(User user) throws ServiceException {
 		try {
 			UserValidator.validateForUserRegistration(user);
 			userDAO.save(user);
+			return true;
 		} catch (ValidationException e) {
 			throw new ServiceException("Unable to register", e);
 		} catch (PersistenceException e) {
-			throw new ServiceException(" ", e);
+			throw new ServiceException("Given email id has already been registered", e);
 		}
+
 	}
-	
+
 	public void registerForEmployee(Employee employee) throws ServiceException {
 		try {
 			UserValidator.validateForEmployeeRegistration(employee);
@@ -47,21 +48,20 @@ public class UserService {
 		} catch (ValidationException e) {
 			throw new ServiceException("Unable to login", e);
 		} catch (PersistenceException e) {
+			throw new ServiceException("Incorrect email id or password", e);
+		}
+	}
+
+	public boolean loginForEmployee(String emailId, String password) throws ServiceException {
+		try {
+			UserValidator.validateIfNullEmailIdPassword(emailId, password);
+			loginDAO.loginForEmployee(emailId, password);
+			return true;
+		} catch (ValidationException e) {
+			throw new ServiceException("Unable to login", e);
+		} catch (PersistenceException e) {
 			throw new ServiceException(" ", e);
 		}
 	}
-	
-	public boolean loginForEmployee(String emailId, String password) throws ServiceException {
-		try {
-		UserValidator.validateIfNullEmailIdPassword(emailId, password);
-		loginDAO.loginForEmployee(emailId, password);
-		return true;
-	} catch (ValidationException e) {
-		throw new ServiceException("Unable to login", e);
-	} catch (PersistenceException e) {
-		throw new ServiceException(" ", e);
-	}
-}
-	
 
 }

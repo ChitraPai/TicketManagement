@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.dao.DuplicateKeyException;
@@ -46,23 +48,24 @@ public class EmployeeDAO implements DAO<Employee> {
 	public List<Employee> listAll() {
 		String sql = "select id,department_id,role_id,name,email_id,password,active from employees";
 
-		return jdbcTemplate.query(sql, (rs, rowNum) -> {
-			Employee employee = new Employee();
-			employee.setId(rs.getInt("id"));
-			Department department = new Department();
-			department.setId(rs.getInt("department_id"));
-			employee.setDepartmentId(department);
-			Role role = new Role();
-			role.setId(rs.getInt("role_id"));
-			employee.setRoleId(role);
-			employee.setName(rs.getString("name"));
-			employee.setEmailId(rs.getString("email_id"));
-			employee.setPassword(rs.getString("password"));
-			employee.setActive(rs.getBoolean("active"));
-			return employee;
+		return jdbcTemplate.query(sql, (rs, rowNum) -> convert(rs));
 
-		});
+	}
 
+	private Employee convert(ResultSet rs) throws SQLException {
+		Employee employee = new Employee();
+		employee.setId(rs.getInt("id"));
+		Department department = new Department();
+		department.setId(rs.getInt("department_id"));
+		employee.setDepartmentId(department);
+		Role role = new Role();
+		role.setId(rs.getInt("role_id"));
+		employee.setRoleId(role);
+		employee.setName(rs.getString("name"));
+		employee.setEmailId(rs.getString("email_id"));
+		employee.setPassword(rs.getString("password"));
+		employee.setActive(rs.getBoolean("active"));
+		return employee;
 	}
 
 	public Integer retrieveEmployeeId(String emailId, String password) throws PersistenceException {
@@ -76,11 +79,11 @@ public class EmployeeDAO implements DAO<Employee> {
 
 	}
 
-	public int retrieveEmployeeIdForDepartment(int deptId) throws PersistenceException {
+	public Employee listByDepartmentId(int deptId) throws PersistenceException {
 		try {
-			String sql = "select id from employees where department_id=? and role_id=2 limit 1";
+			String sql = "select * from employees where department_id=? and role_id=2 limit 1";
 			Object[] params = { deptId };
-			return jdbcTemplate.queryForObject(sql, params, Integer.class);
+			return jdbcTemplate.queryForObject(sql, params,(rs, rowNum) -> convert(rs));
 		} catch (EmptyResultDataAccessException e) {
 			throw new PersistenceException("Given department id doesnt exist", e);
 		}

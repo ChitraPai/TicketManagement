@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.mail.EmailException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.revature.exception.PersistenceException;
 import com.revature.model.TicketTransaction;
 import com.revature.util.ConnectionUtil;
+import com.revature.util.MailUtil;
 
 public class TicketCreationDAO {
 	JdbcTemplate jdbcTemplate = ConnectionUtil.getJdbcTemplate();
@@ -21,18 +23,25 @@ public class TicketCreationDAO {
 	TicketTransactionDAO ticketDAO = new TicketTransactionDAO();
 	Logger logger = Logger.getLogger(TicketCreationDAO.class.getName());
 
-	public boolean ticketCreation(String emailId, String password, String subject, String description,
+	public boolean ticketCreation(String emailId, String subject, String description,
 			String departmentName, String priorityName) throws PersistenceException {
-		if (loginDAO.loginForUser(emailId, password)) {
-			int id = userDAO.retrieveUserId(emailId,password);
+		
+			int id = userDAO.getUserIdForEmail(emailId);
 			int deptId = departmentDAO.retrieveDepartmentId(departmentName).getId();
 			int priorityId = priorityDAO.retrievePriorityId(priorityName).getId();
-			int empId= employeeDAO.retrieveEmployeeIdForDepartment(deptId);
+			int empId= employeeDAO.listByDepartmentId(deptId).getId();
+			String empMail=employeeDAO.listByDepartmentId(deptId).getEmailId();
 			String status="In Progress";
 			String sql = "insert into ticket_transactions(user_id,subject,description,department_id,priority_id,assigned_employee_id,status) values(?,?,?,?,?,?,?)";
 			Object[] params = { id, subject, description, deptId, priorityId, empId, status};
 			jdbcTemplate.update(sql, params);
-			return true;
+			int ticketId=ticketDAO.retrieveTicketId(id, subject, description, deptId, priorityId);
+			try {
+				MailUtil.sendSimpleMail(emailId,"Ticket Created Sucessfully.Your Ticket id is:",ticketId);
+				MailUtil.sendSimpleMail(empMail,"A ticket has been created. The issue id is:",ticketId);
+			} catch (EmailException e) {
+			
+		return true;
 		}
 		return false;
 	}

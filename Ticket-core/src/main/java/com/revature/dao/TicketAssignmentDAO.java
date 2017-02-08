@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.mail.EmailException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.revature.exception.PersistenceException;
 import com.revature.model.TicketTransaction;
 import com.revature.util.ConnectionUtil;
+import com.revature.util.MailUtil;
 
 public class TicketAssignmentDAO {
+	UserDAO userDAO = new UserDAO();
 	TicketTransactionDAO ticketDAO = new TicketTransactionDAO();
 	LoginDAO loginDAO = new LoginDAO();
 	EmployeeDAO employeeDAO = new EmployeeDAO();
@@ -24,13 +27,13 @@ public class TicketAssignmentDAO {
 		try {
 			if (loginDAO.loginForEmployee(emailId, password)) {
 				int id = employeeDAO.retrieveEmployeeId(emailId, password);
-				if ((id == ticketDAO.getEmployeeIdForTicket(ticketId))
+				if ((id == ticketDAO.listByTicketId(ticketId).getId())
 						&& (ticketDAO.getStatusForId(ticketId) != "close")) {
 					String sql = "update ticket_transactions set assigned_employee_id=? where id=?";
 					Object[] params = { employeeId, ticketId };
 					jdbcTemplate.update(sql, params);
 				}
-			}
+		}
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new PersistenceException("", e);
@@ -73,6 +76,12 @@ public class TicketAssignmentDAO {
 				String sql = "update ticket_transactions set resolved_date=now(),status='resolved' where id=?";
 				Object[] params = { ticketId };
 				jdbcTemplate.update(sql, params);
+				int userId=ticketDAO.listByTicketId(ticketId).getUserId().getId();
+				String emailId=userDAO.getEmailForUserId(userId);
+				try {
+					MailUtil.sendSimpleMail(emailId,"The solution is: " +solution+ " for the ticket id: ",ticketId);
+				} catch (EmailException e) {
+				}
 			}
 		} catch (EmptyResultDataAccessException e) {
 			throw new PersistenceException("", e);

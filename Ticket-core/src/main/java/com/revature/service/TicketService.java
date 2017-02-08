@@ -15,17 +15,16 @@ public class TicketService {
 	private TicketCreationDAO ticketCreation = new TicketCreationDAO();
 	private TicketAssignmentDAO ticketAssignment = new TicketAssignmentDAO();
 
-	public void ticketCreation(String emailId, String password, String subject, String description,
+	public void ticketCreation(String emailId,String subject, String description,
 			String departmentName, String priorityName) throws ServiceException {
-		if (userService.loginForUser(emailId, password)) {
 			try {
 				UserValidator.validateForTicketCreation(subject, description, departmentName, priorityName);
-				ticketCreation.ticketCreation(emailId, password, subject, description, departmentName, priorityName);
+				ticketCreation.ticketCreation(emailId, subject, description, departmentName, priorityName);
 			} catch (ValidationException | DataAccessException | PersistenceException e) {
 				throw new ServiceException(" ", e);
 			}
 		}
-	}
+	
 
 	public void ticketUpdation(String emailId, String password, int ticketId, String description)
 			throws ServiceException {
