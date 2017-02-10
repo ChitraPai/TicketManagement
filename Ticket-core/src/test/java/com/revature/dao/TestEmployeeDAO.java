@@ -34,7 +34,7 @@ public class TestEmployeeDAO {
 //		}
 //		System.out.println(employeeDAO.retreiveRoleNameforEmployee(3));
 //		System.out.println(employeeDAO.retrieveEmployeeId("david@gmail"));
-
+System.out.println(employeeDAO.listByDepartmentId(2).getEmailId());
 	}
 
 }

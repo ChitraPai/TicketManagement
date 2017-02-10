@@ -19,23 +19,23 @@ create ticket
         
             Statement statement = connection.createStatement();
 
-            resultset = statement.executeQuery("SELECT NAME FROM DEPARTMENTS");
+            resultset = statement.executeQuery("SELECT * FROM DEPARTMENTS");
     %>
 <h3> Create Tickets </h3>
-<form action="tickets/createticket" method="GET">
-<input type="hidden" name="emailId" value={$emailId}>
+<form action="../tickets/createtickets" method="GET">
+<input type="hidden" name="emailId" value="${emailId}">
 Subject:&nbsp&nbsp<input type="text" placeholder="Subject" name="subject" required autofocus><br><br><br>
 Description:&nbsp&nbsp<input type="text" placeholder="Description"name="description" required autofocus><br><br><br>
  Department:
-        <select>
+        <select name="departmentName">
         <%  while(resultset.next()){ %>
-            <option><%= resultset.getString(1)%></option>
+            <option value="<%= resultset.getString(2)%>"> <%= resultset.getString(2)%></option>
         <% } %>
         </select> 
             <br><br><br>
             Priority:<input type="radio" name="priority" value="Low">Low&nbsp<input type="radio" name="priority" value="Medium">Medium<input type="radio" name="priority" value="High">High<br><br><br>
             
-<input type="submit"  name="submit" value="Submit" onclick="window.location.href='thankyou.jsp'"><br><br><br>
+<input type="submit"  name="submit" value="Submit"><br><br><br>
 </form>
 <%
         } catch (Exception e) {

@@ -41,7 +41,9 @@ public class TestUserService {
 //userService.loginForUser("aacc", "123");
 		
 		TicketService ticketService=new TicketService();
-ticketService.ticketCreation("chitrapaij@gmail.com", "Wifi connectivity","laptop not getting connected", "Finance","Medium");
+//ticketService.ticketCreation("chitrapaij@gmail.com", "Hike in salary needed","Hike in the salary is requested urgently", "Finance","Medium");
+//ticketService.resolveTicket(8, "The performance will be analyzed and then be recommended for the salary hike");
+	ticketService.closeTicket(6);
 	}
 
 }

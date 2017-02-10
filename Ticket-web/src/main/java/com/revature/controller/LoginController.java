@@ -1,5 +1,7 @@
 package com.revature.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,11 +37,15 @@ public class LoginController {
 
 	@GetMapping("/userlogin")
 	public String userLogin(@RequestParam("emailId") String emailId, @RequestParam("password") String password,
-			ModelMap modelMap) throws ServiceException {
+			ModelMap modelMap,HttpSession session) throws ServiceException {
 		try {
-			modelMap.addAttribute("emailIdd", emailId);
-			userService.loginForUser(emailId, password);
-			return "redirect:/userticketoptions.jsp";
+			user.setEmailId(emailId);
+			user.setPassword(password);
+			if(userService.loginForUser(emailId, password)){
+				session.setAttribute("LOGGED_IN_USER", user);
+			}
+			modelMap.addAttribute("emailId", emailId);
+			return "../userticketoptions.jsp";
 		} catch (ServiceException e) {
 			modelMap.addAttribute("ERROR", e.getMessage());
 			return "/userlogin.jsp";
