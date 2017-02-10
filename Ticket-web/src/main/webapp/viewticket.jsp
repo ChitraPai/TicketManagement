@@ -9,10 +9,6 @@ View tickets
 </title>
 <body>
 <h3> View Tickets </h3>
-<form action="../tickets/viewtickets" method="GET">
-Ticket Id:&nbsp&nbsp<input type="text" placeholder="Ticket Id"name="ticketId" required autofocus><br><br><br>
-	<button type="submit"><h4>Find My Tickets</h4></button>
-	</form>
 	<h3>User Details</h3>
 	<%-- 	To Test Values : ${User_Details} --%>
 	<table border="1">

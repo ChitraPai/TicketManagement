@@ -21,14 +21,14 @@ public class LoginController {
 
 	@GetMapping("/register")
 	public String register(@RequestParam("name") String name, @RequestParam("emailId") String emailId,
-			@RequestParam("password") String password, ModelMap modelMap) throws ServiceException {
+			@RequestParam("password") String password, ModelMap modelMap,HttpSession session) throws ServiceException {
 
 		user.setName(name);
 		user.setEmailId(emailId);
 		user.setPassword(password);
 		try {
 			userService.registerForUser(user);
-			return "redirect:/userticketoptions.jsp";
+			return "redirect:/userlogin.jsp";
 		} catch (ServiceException e) {
 			modelMap.addAttribute("ERROR", e.getMessage());
 			return "/register.jsp";

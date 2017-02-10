@@ -1,9 +1,12 @@
 package com.revature.service;
 
+import java.util.List;
+
 import com.revature.exception.ServiceException;
 import com.revature.model.Department;
 import com.revature.model.Employee;
 import com.revature.model.Role;
+import com.revature.model.TicketTransaction;
 import com.revature.model.User;
 
 public class TestUserService {
@@ -43,7 +46,12 @@ public class TestUserService {
 		TicketService ticketService=new TicketService();
 //ticketService.ticketCreation("chitrapaij@gmail.com", "Hike in salary needed","Hike in the salary is requested urgently", "Finance","Medium");
 //ticketService.resolveTicket(8, "The performance will be analyzed and then be recommended for the salary hike");
-	ticketService.closeTicket(6);
+//	ticketService.closeTicket(6);
+		List<TicketTransaction> list=ticketService.viewTickets("chitrapaij@gmail.com");
+		for(TicketTransaction t:list)
+		{
+			System.out.println(t);
+		}
 	}
 
 }

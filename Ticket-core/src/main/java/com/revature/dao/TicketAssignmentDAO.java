@@ -22,20 +22,17 @@ public class TicketAssignmentDAO {
 	JdbcTemplate jdbcTemplate = ConnectionUtil.getJdbcTemplate();
 	Logger logger = Logger.getLogger(TicketAssignmentDAO.class.getName());
 
-	public void ticketReassignment(String emailId, String password, Integer ticketId, Integer employeeId)
+	public void ticketReassignment(String emailId,Integer ticketId, Integer employeeId)
 			throws PersistenceException {
 		try {
-			if (loginDAO.loginForEmployee(emailId, password)) {
-				int id = employeeDAO.retrieveEmployeeId(emailId, password);
+				int id = employeeDAO.getEmployeeIdForEmail(emailId);
 				if ((id == ticketDAO.listByTicketId(ticketId).getId())
 						&& (ticketDAO.getStatusForId(ticketId) != "close")) {
 					String sql = "update ticket_transactions set assigned_employee_id=? where id=?";
 					Object[] params = { employeeId, ticketId };
 					jdbcTemplate.update(sql, params);
 				}
-		}
-
-		} catch (EmptyResultDataAccessException e) {
+				} catch (EmptyResultDataAccessException e) {
 			throw new PersistenceException("", e);
 		}
 

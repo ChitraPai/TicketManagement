@@ -1,5 +1,7 @@
 package com.revature.service;
 
+import java.util.List;
+
 import org.springframework.dao.DataAccessException;
 
 import com.revature.dao.TicketAssignmentDAO;
@@ -8,6 +10,7 @@ import com.revature.dao.TicketCreationDAO;
 import com.revature.exception.PersistenceException;
 import com.revature.exception.ServiceException;
 import com.revature.exception.ValidationException;
+import com.revature.model.TicketTransaction;
 import com.revature.validator.UserValidator;
 
 public class TicketService {
@@ -50,28 +53,27 @@ public class TicketService {
 		}
 	
 
-	public void viewTickets(String emailId, String password) throws ServiceException {
-		if (userService.loginForUser(emailId, password)) {
-			try {
-				ticketCreation.viewTickets(emailId, password);
+	public List<TicketTransaction> viewTickets(String emailId) throws ServiceException {
+				try {
+				return ticketCreation.viewTickets(emailId);
 			} catch (DataAccessException | PersistenceException e) {
 				throw new ServiceException(" ", e);
 			}
 		}
-	}
+	
 
-	public void ticketReassignment(String emailId, String password, Integer ticketId, Integer employeeId)
+	public void ticketReassignment(String emailId,Integer ticketId, Integer employeeId)
 			throws ServiceException {
-		if (userService.loginForEmployee(emailId, password)) {
+	
 			try {
 				UserValidator.validateIfNullTicketId(ticketId);
 				UserValidator.validateIfNullEmployeeId(employeeId);
-				ticketAssignment.ticketReassignment(emailId, password, ticketId, employeeId);
+				ticketAssignment.ticketReassignment(emailId, ticketId, employeeId);
 			} catch (DataAccessException | ValidationException | PersistenceException e) {
 				throw new ServiceException(" ", e);
 			}
 		}
-	}
+	
 
 	public void resolveTicket(Integer ticketId, String solution) throws ServiceException {
 		try {

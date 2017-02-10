@@ -59,7 +59,7 @@ public class TicketTransactionDAO {
 	}
 
 	public List<TicketTransaction> listByUserId(int id) {
-		String sql = "select id,subject,description,created_date,status from ticket_transactions where user_id=?";
+		String sql = "select id,subject,description,created_date,resolved_date,status from ticket_transactions where user_id=?";
 		return ticketView(id, sql);
 	}
 
@@ -71,6 +71,7 @@ public class TicketTransactionDAO {
 			ticket.setSubject(rs.getString("subject"));
 			ticket.setDescription(rs.getString("description"));
 			ticket.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
+			ticket.setResolvedDate(rs.getTimestamp("resolved_date").toLocalDateTime());
 			ticket.setStatus(rs.getString("status"));
 			return ticket;
 		});

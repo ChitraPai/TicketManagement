@@ -71,18 +71,9 @@ public class TicketCreationDAO {
 		return true;
 	}
 
-	public boolean viewTickets(String emailId, String password) throws PersistenceException {
-		if (loginDAO.loginForUser(emailId, password)) {
-			int id = userDAO.retrieveUserId(emailId, password);
-			List<TicketTransaction> list = ticketDAO.listByUserId(id);
-			Iterator<TicketTransaction> i = list.iterator();
-			while (i.hasNext()) {
-				TicketTransaction tic = (TicketTransaction) i.next();
-				logger.log(Level.INFO, tic.getId() + "\t" + tic.getCreatedDate().toLocalDate() + "\t" + tic.getSubject()
-						+ "\t\t" + tic.getDescription() + "\t" + tic.getStatus());
-			}
-			return true;
-		}
-		return false;
-	}
+	public List<TicketTransaction> viewTickets(String emailId) throws PersistenceException {
+			int id = userDAO.getUserIdForEmail(emailId);
+			 return ticketDAO.listByUserId(id);
+				}
+	
 }

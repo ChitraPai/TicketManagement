@@ -1,12 +1,15 @@
 package com.revature.dao;
 
 
+import java.util.List;
+
 import org.apache.commons.mail.EmailException;
 import org.springframework.dao.DataAccessException;
 
 import com.revature.exception.PersistenceException;
 import com.revature.exception.ServiceException;
 import com.revature.exception.ValidationException;
+import com.revature.model.TicketTransaction;
 import com.revature.util.MailUtil;
 import com.revature.validator.UserValidator;
 
@@ -17,7 +20,11 @@ public class TestTicketCreationDAO {
 //		System.out.println(
 //				ticDAO.ticketUpdation("aiswarya@gmail", "123abc", 2,"salry slip is requested for submission"));
 		
-//ticDAO.viewTickets("aiswarya@gmail", "123abc");
+		List<TicketTransaction> list=ticDAO.viewTickets("chitrapaij@gmail.com");
+		for(TicketTransaction t: list)
+		{
+			System.out.println(t);
+		}
 //		ticDAO.ticketUpdation("aiswarya@gmail", "123abc", 2,"salary slip is required for submission");
 //		ticDAO.closeTicket("aiswarya@gmail", "123abc", 2);
 //		System.out.println(ticDAO.ticketCreation("rashik@gmail", "aabbcc","Hike in salary","Hike in salary is requested", "HR department","high"));
