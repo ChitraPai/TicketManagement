@@ -13,6 +13,6 @@ public class TestTicketAssignment {
 //		ticketAssignment.resolveTicket(2, "we have sent the salary slip via mail");
 //		ticketAssignment.viewAssignedTickets(4);
 //		ticketAssignment.deleteTicket(2, 1);
-		ticketAssignment.resolveTicket(6,"A service mechanic has been sent to solve the problems with laptop");
+//		ticketAssignment.resolveTicket(6,"A service mechanic has been sent to solve the problems with laptop");
 	}
 }

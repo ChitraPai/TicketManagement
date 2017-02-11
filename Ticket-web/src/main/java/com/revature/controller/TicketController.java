@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.revature.exception.ServiceException;
+import com.revature.model.Employee;
 import com.revature.model.TicketTransaction;
 import com.revature.model.User;
 import com.revature.service.TicketService;
@@ -20,12 +21,13 @@ import com.revature.service.TicketService;
 public class TicketController {
 	TicketService ticketService = new TicketService();
 	User user = new User();
+	Employee employee=new Employee();
 
 
 	@GetMapping("/creation")
 	public String creation()
 	{
-		return "../ticketcreation.jsp";
+		return "../TicketCreation.jsp";
 			
 	}
 	@GetMapping("/createtickets")
@@ -41,7 +43,7 @@ public class TicketController {
 	@GetMapping("/updation")
 	public String Updation()
 	{
-		return "../ticketupdation.jsp";
+		return "../TicketUpdation.jsp";
 			
 	}
 	
@@ -56,7 +58,7 @@ public class TicketController {
 	@GetMapping("/close")
 	public String close()
 	{
-		return "../closeticket.jsp";
+		return "../CloseTicket.jsp";
 	}
 	
 	@GetMapping("/closeTicket")
@@ -73,19 +75,43 @@ public class TicketController {
 			throws ServiceException {
 		user=(User) session.getAttribute("LOGGED_IN_USER");
 		List<TicketTransaction> list=ticketService.viewTickets(user.getEmailId());
-		modelMap.addAttribute("TICKET_LIST",list);
-		return "redirect:/index.jsp";
+		modelMap.addAttribute("list",list);
+		return "../ViewTickets.jsp";
 	}
 	@GetMapping("/reassign")
 	public String reassign()
 	{
-		return "../ticketreassignment.jsp";
+		return "../TicketReassignment.jsp";
 	}
 	@GetMapping("/reassigntickets")
-	public String reassignTicket(HttpSession session)
+	public String reassignTicket(HttpSession session,@RequestParam("ticketId") Integer ticketId,@RequestParam("employeeId")Integer employeeId)
 			throws ServiceException {
-		user=(User) session.getAttribute("LOGGED_IN_USER");
-		ticketService.viewTickets(user.getEmailId());
-		return "redirect:/index.jsp";
+		employee=(Employee) session.getAttribute("LOGGED_IN_USER");
+		ticketService.ticketReassignment(employee.getEmailId(), ticketId, employeeId);
+		return "../index.jsp";
 	}
+	
+	@GetMapping("/resolve")
+	public String resolve()
+	{
+		return "../ResolveTicket.jsp";
+	}
+	
+	@GetMapping("/resolveticket")
+	public String resolveTicket(HttpSession session,@RequestParam("ticketId")Integer ticketId,@RequestParam("solution")String solution)
+			throws ServiceException {
+		employee=(Employee) session.getAttribute("LOGGED_IN_USER");
+		ticketService.resolveTicket(employee.getEmailId(),ticketId, solution);
+		return "../index.jsp";
+	}
+	
+	@GetMapping("/viewassignedtickets")
+	public String viewAssignedTickets(HttpSession session,ModelMap modelMap)
+			throws ServiceException {
+		employee= (Employee) session.getAttribute("LOGGED_IN_USER");
+		List<TicketTransaction> list=ticketService.viewAssignedTickets(employee.getEmailId());
+		modelMap.addAttribute("list",list);
+		return "../ViewAssignedTickets.jsp";
+	}
+
 }

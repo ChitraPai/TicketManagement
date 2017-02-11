@@ -54,7 +54,7 @@ public class TicketTransactionDAO {
 			Object[] params = { ticketId };
 			return jdbcTemplate.queryForObject(sql, params, String.class);
 		} catch (EmptyResultDataAccessException e) {
-			throw new PersistenceException("Given Ticket Id does not exist",e);
+			throw new PersistenceException("Given Ticket Id does not exist", e);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class TicketTransactionDAO {
 	}
 
 	public List<TicketTransaction> listByAssignedEmployeeId(int id) {
-		String sql = "select id,subject,description,created_date,status from ticket_transactions where assigned_employee_id=?";
+		String sql = "select id,subject,description,created_date,resolved_date,status from ticket_transactions where assigned_employee_id=?";
 		return ticketView(id, sql);
 	}
 
@@ -86,22 +86,21 @@ public class TicketTransactionDAO {
 		try {
 			String sql = "select * from ticket_transactions where id=?";
 			Object[] params = { ticketId };
-			return  jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> convert(rs));
+			return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> convert(rs));
 		} catch (EmptyResultDataAccessException e) {
-			throw new PersistenceException("Given Ticket Id does not exist",e);
+			throw new PersistenceException("Given Ticket Id does not exist", e);
 		}
 
 	}
-	
-	
-	public Integer retrieveTicketId(int userId, String subject, String description,
-			Integer departmentId, Integer priorityId) throws PersistenceException{
+
+	public Integer retrieveTicketId(int userId, String subject, String description, Integer departmentId,
+			Integer priorityId) throws PersistenceException {
 		try {
-		String sql = "select id from ticket_transactions where user_id=? and subject=? and description=? and department_id=? and priority_id=?";
-		Object[] params = { userId,subject,description,departmentId,priorityId };		
-		return jdbcTemplate.queryForObject(sql,params,Integer.class);
+			String sql = "select id from ticket_transactions where user_id=? and subject=? and description=? and department_id=? and priority_id=?";
+			Object[] params = { userId, subject, description, departmentId, priorityId };
+			return jdbcTemplate.queryForObject(sql, params, Integer.class);
 		} catch (EmptyResultDataAccessException e) {
-			throw new PersistenceException("Invalid credentials",e);
+			throw new PersistenceException("Invalid credentials", e);
 		}
 
 	}

@@ -75,11 +75,11 @@ public class TicketService {
 		}
 	
 
-	public void resolveTicket(Integer ticketId, String solution) throws ServiceException {
+	public void resolveTicket(String emailId,Integer ticketId, String solution) throws ServiceException {
 		try {
 			UserValidator.validateIfNullTicketId(ticketId);
 			UserValidator.validateForResolvingTicket(solution);
-			ticketAssignment.resolveTicket(ticketId, solution);
+			ticketAssignment.resolveTicket(emailId,ticketId, solution);
 		} catch (DataAccessException | ValidationException | PersistenceException e) {
 			throw new ServiceException(" ", e);
 		}
@@ -97,5 +97,12 @@ public class TicketService {
 			}
 		}
 	}
-
+	public List<TicketTransaction> viewAssignedTickets(String emailId) throws ServiceException {
+		try {
+		return ticketAssignment.viewAssignedTickets(emailId);
+	} catch (DataAccessException | PersistenceException e) {
+		throw new ServiceException(" ", e);
+	}
 }
+	
+	}

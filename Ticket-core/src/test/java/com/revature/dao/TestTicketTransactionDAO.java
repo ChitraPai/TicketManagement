@@ -3,11 +3,12 @@ package com.revature.dao;
 import java.util.Iterator;
 import java.util.List;
 
+import com.revature.exception.PersistenceException;
 import com.revature.model.TicketTransaction;
 
 public class TestTicketTransactionDAO {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws PersistenceException {
 		TicketTransaction ticket = new TicketTransaction();
 		TicketTransactionDAO ticketDAO = new TicketTransactionDAO();
 //		List<TicketTransaction> listAll = ticketDAO.listAll();
@@ -33,5 +34,6 @@ public class TestTicketTransactionDAO {
 // tic.getStatus());
 //	}
 //		System.out.println(ticketDAO.getEmployeeIdForTicket(14));
+		System.out.println(ticketDAO.listByTicketId(12).getAssignedEmployeeId().getId());
 	}
 }

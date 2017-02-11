@@ -4,7 +4,7 @@ login
 </title>
 <body>
 <h3>Login</h3>
-<form action="home/employeelogin" method="POST">
+<form action="../home/employeelogin" method="get">
 Email:&nbsp&nbsp<input type="text" placeholder="Email" name="emailId" required autofocus><br><br><br>
 Password:&nbsp&nbsp<input type="password" placeholder="Password"name="password" required autofocus><br><br><br>
 ${ERROR}<br><br>

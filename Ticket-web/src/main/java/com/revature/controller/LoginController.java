@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.revature.exception.ServiceException;
+import com.revature.model.Employee;
 import com.revature.model.User;
 import com.revature.service.UserService;
 
@@ -17,21 +18,22 @@ import com.revature.service.UserService;
 @RequestMapping("/home")
 public class LoginController {
 	User user = new User();
+	Employee employee=new Employee();
 	UserService userService = new UserService();
 
 	@GetMapping("/register")
 	public String register(@RequestParam("name") String name, @RequestParam("emailId") String emailId,
 			@RequestParam("password") String password, ModelMap modelMap,HttpSession session) throws ServiceException {
-
+		session.setAttribute("LOGGED_IN_USER", user);
 		user.setName(name);
 		user.setEmailId(emailId);
 		user.setPassword(password);
 		try {
 			userService.registerForUser(user);
-			return "redirect:/userlogin.jsp";
+			return "../UserLogin.jsp";
 		} catch (ServiceException e) {
 			modelMap.addAttribute("ERROR", e.getMessage());
-			return "/register.jsp";
+			return "/Register.jsp";
 		}
 	}
 
@@ -45,24 +47,29 @@ public class LoginController {
 				session.setAttribute("LOGGED_IN_USER", user);
 			}
 			modelMap.addAttribute("emailId", emailId);
-			return "../userticketoptions.jsp";
+			return "../UserTicketOptions.jsp";
 		} catch (ServiceException e) {
 			modelMap.addAttribute("ERROR", e.getMessage());
-			return "/userlogin.jsp";
+			return "/UserLogin.jsp";
 		}
 
 	}
 
-	@PostMapping("/employeelogin")
+	@GetMapping("/employeelogin")
 	public String employeeLogin(@RequestParam("emailId") String emailId, @RequestParam("password") String password,
-			ModelMap modelMap) throws ServiceException {
+			ModelMap modelMap,HttpSession session) throws ServiceException {
 		try {
-		userService.loginForEmployee(emailId, password);
-		return "redirect:/employeeticketoptions.jsp";
+			employee.setEmailId(emailId);
+			employee.setPassword(password);
+			if(userService.loginForEmployee(emailId, password)){
+				session.setAttribute("LOGGED_IN_USER", employee);
+			}
+			modelMap.addAttribute("emailId", emailId);
+			return "../EmployeeTicketOptions.jsp";
 		}
 		catch (ServiceException e) {
 			modelMap.addAttribute("ERROR", e.getMessage());
-		return "redirect:/employeelogin.jsp";
+		return "../EmployeeLogin.jsp";
 	}
 }
 }
