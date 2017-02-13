@@ -47,12 +47,14 @@ public class TestUserService {
 //ticketService.ticketCreation("chitrapaij@gmail.com", "Hike in salary needed","Hike in the salary is requested urgently", "Finance","Medium");
 //ticketService.resolveTicket(8, "The performance will be analyzed and then be recommended for the salary hike");
 //	ticketService.closeTicket(6);
-		List<TicketTransaction> list=ticketService.viewAssignedTickets("chitrapaij@gmail.com");
-		for(TicketTransaction t:list)
-		{
-			System.out.println(t);
-		}
-
+//		List<TicketTransaction> list=ticketService.viewAssignedTickets("chitrapaij@gmail.com");
+//		for(TicketTransaction t:list)
+//		{
+//			System.out.println(t);
+//		}
+//ticketService.ticketCreation("chitrapaij@gmail.com", "testing create", "testing creation of ticket", "Finance","low");
+//	ticketService.resolveTicket("chitrapaij@gmail.com", 15, "testing resolve");
+	ticketService.deleteTicket(15,"david@gmail" );
 	}
 
 }

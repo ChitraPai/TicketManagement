@@ -13,7 +13,7 @@ View Assigned Tickets
 				<th>Ticket Id</th>
 				<th>Subject</th>
 				<th>Description</th>
-				<th>Created Date<th>
+				<th>Created Date</th>
 				<th>Resolved Date</th>
 				<th>Status</th>
 				</tr>

@@ -11,20 +11,20 @@ public class TestTicketTransactionDAO {
 	public static void main(String[] args) throws PersistenceException {
 		TicketTransaction ticket = new TicketTransaction();
 		TicketTransactionDAO ticketDAO = new TicketTransactionDAO();
-//		List<TicketTransaction> listAll = ticketDAO.listAll();
-//		 Iterator<TicketTransaction> i = listAll.iterator();
-//		 while (i.hasNext()) {
-//		 TicketTransaction tic = (TicketTransaction) i.next();
-//		 System.out.println(tic.getId() + "\t" + tic.getUserId().getId() + "\t" +
-//		 tic.getSubject() + "\t"
-//		 + tic.getDescription() + "\t" + tic.getCreatedDate().toLocalDate() +
-//		 "\t"+tic.getPriorityId().getId()+"\t"+
-//		 + tic.getDepartmentId().getId() + "\t"+
-//		 tic.getAssignedEmployeeId().getId() + "\t"
-//		 + tic.getResolvedDate().toLocalDate() + "\t" +
-//		 tic.getStatus());
-//
-//		 }
+		List<TicketTransaction> listAll = ticketDAO.listAll();
+		 Iterator<TicketTransaction> i = listAll.iterator();
+		 while (i.hasNext()) {
+		 TicketTransaction tic = (TicketTransaction) i.next();
+		 System.out.println(tic.getId() + "\t" + tic.getUserId().getId() + "\t" +
+		 tic.getSubject() + "\t"
+		 + tic.getDescription() + "\t" + tic.getCreatedDate().toLocalDate() +
+		 "\t"+tic.getPriorityId().getId()+"\t"+
+		 + tic.getDepartmentId().getId() + "\t"+
+		 tic.getAssignedEmployeeId().getId() + "\t"
+		 + tic.getResolvedDate() + "\t" +
+		 tic.getStatus());
+
+		 }
 //		ticket.setId(1);
 //		List<TicketTransaction> list = ticketDAO.listByUserId(1);
 //		 Iterator<TicketTransaction> i = list.iterator();
@@ -34,6 +34,9 @@ public class TestTicketTransactionDAO {
 // tic.getStatus());
 //	}
 //		System.out.println(ticketDAO.getEmployeeIdForTicket(14));
-		System.out.println(ticketDAO.listByTicketId(12).getAssignedEmployeeId().getId());
+//		System.out.println(ticketDAO.listByTicketId(12).getAssignedEmployeeId().getId());
+		
+//	ticket=ticketDAO.listByTicketId(14);
+//		System.out.println(ticket);
 	}
 }

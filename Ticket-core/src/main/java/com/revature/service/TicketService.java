@@ -22,10 +22,8 @@ public class TicketService {
 			String priorityName) throws ServiceException {
 		try {
 			UserValidator.validateForTicketCreation(subject, description, departmentName, priorityName);
-			System.out.println("Service Validation done "+emailId);
-			boolean result=ticketCreation.ticketCreation(emailId, subject, description, departmentName, priorityName);
-			System.out.println("Service Done "+result);
-		} catch (ValidationException | DataAccessException | PersistenceException e) {
+			ticketCreation.ticketCreation(emailId, subject, description, departmentName, priorityName);
+				} catch (ValidationException | DataAccessException | PersistenceException e) {
 			throw new ServiceException(" ", e);
 		}
 	}
@@ -85,18 +83,17 @@ public class TicketService {
 		}
 	}
 
-	public void deleteTicket(String emailId, String password, Integer ticketId, Integer employeeId)
+	public void deleteTicket(Integer ticketId, String emailId)
 			throws ServiceException {
-		if (userService.loginForEmployee(emailId, password)) {
 			try {
 				UserValidator.validateIfNullTicketId(ticketId);
-				UserValidator.validateIfNullEmployeeId(employeeId);
-				ticketAssignment.deleteTicket(ticketId, employeeId);
+			
+				ticketAssignment.deleteTicket(ticketId, emailId);
 			} catch (DataAccessException | ValidationException | PersistenceException e) {
 				throw new ServiceException(" ", e);
 			}
 		}
-	}
+	
 	public List<TicketTransaction> viewAssignedTickets(String emailId) throws ServiceException {
 		try {
 		return ticketAssignment.viewAssignedTickets(emailId);

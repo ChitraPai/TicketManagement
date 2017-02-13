@@ -113,5 +113,18 @@ public class TicketController {
 		modelMap.addAttribute("list",list);
 		return "../ViewAssignedTickets.jsp";
 	}
-
+	
+	@GetMapping("/delete")
+	public String delete()
+	{
+		return "../DeleteTicket.jsp";
+	}
+	
+	@GetMapping("/deletetickets")
+	public String deleteTicket(HttpSession session,@RequestParam("ticketId") Integer ticketId)
+			throws ServiceException {
+		employee=(Employee) session.getAttribute("LOGGED_IN_USER");
+			ticketService.deleteTicket(ticketId, employee.getEmailId());
+		return "../index.jsp";
+	}
 }

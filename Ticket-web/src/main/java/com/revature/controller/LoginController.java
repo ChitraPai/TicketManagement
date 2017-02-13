@@ -61,8 +61,9 @@ public class LoginController {
 		try {
 			employee.setEmailId(emailId);
 			employee.setPassword(password);
-			if(userService.loginForEmployee(emailId, password)){
-				session.setAttribute("LOGGED_IN_USER", employee);
+			boolean emp = userService.loginForEmployee(emailId, password);
+			if(emp){
+			session.setAttribute("LOGGED_IN_USER", employee);
 			}
 			modelMap.addAttribute("emailId", emailId);
 			return "../EmployeeTicketOptions.jsp";

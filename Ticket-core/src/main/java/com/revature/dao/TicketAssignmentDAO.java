@@ -82,9 +82,11 @@ public class TicketAssignmentDAO {
 		}
 	}
 
-	public void deleteTicket(Integer ticketId, Integer employeeId) throws PersistenceException {
+	public void deleteTicket(Integer ticketId, String emailId) throws PersistenceException {
 		try {
-			if ("Admin".equals(employeeDAO.retreiveRoleNameforEmployee(employeeId))) {
+			int id=employeeDAO.getEmployeeIdForEmail(emailId);
+			String retreiveRoleNameforEmployee = employeeDAO.retreiveRoleNameforEmployee(id);
+			if ("Admin".equals(retreiveRoleNameforEmployee)) {
 				String sql = "update ticket_transactions set active=0 where id=?";
 				Object[] params = { ticketId };
 				jdbcTemplate.update(sql, params);

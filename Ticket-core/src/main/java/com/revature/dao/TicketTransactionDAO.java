@@ -2,6 +2,7 @@ package com.revature.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -19,7 +20,7 @@ public class TicketTransactionDAO {
 	JdbcTemplate jdbcTemplate = ConnectionUtil.getJdbcTemplate();
 
 	public List<TicketTransaction> listAll() {
-		String sql = "select id,user_id,subject,description,priority_id,created_date,department_id,status from ticket_transactions";
+		String sql = "select id,user_id,subject,description,priority_id,created_date,department_id,assigned_employee_id,resolved_date,status from ticket_transactions";
 
 		return jdbcTemplate.query(sql, (rs, rowNum) -> convert(rs));
 
@@ -43,7 +44,10 @@ public class TicketTransactionDAO {
 		Employee employee = new Employee();
 		employee.setId(rs.getInt("assigned_employee_id"));
 		ticket.setAssignedEmployeeId(employee);
-		ticket.setResolvedDate(rs.getTimestamp("resolved_date").toLocalDateTime());
+		Timestamp resDate = rs.getTimestamp("resolved_date");
+		if (resDate!=null){
+		ticket.setResolvedDate(resDate.toLocalDateTime());
+		}
 		ticket.setStatus(rs.getString("status"));
 		return ticket;
 	}

@@ -13,7 +13,7 @@ public class UserValidator {
 		ValidationUtil.rejectIfNullOrEmpty(emailId, " Email Id");
 		ValidationUtil.rejectIfNullOrEmpty(password, " Password");
 	}
-
+	
 	public static void validateForUserRegistration(User user) throws ValidationException {
 
 		ValidationUtil.rejectIfNullOrEmpty(user.getName(), " Name");

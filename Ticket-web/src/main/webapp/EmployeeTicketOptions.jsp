@@ -14,5 +14,8 @@ ticket options
 <form  action="../tickets/viewassignedtickets" method="GET">
 <input type="submit"  name="viewTicket" value="View Assigned Tickets"><br><br><br>
 </form>
+<form  action="../tickets/delete" method="GET">
+<input type="submit"  name="deleteTicket" value="Delete Tickets"><br><br><br>
+</form>
 </body>
 </html>
