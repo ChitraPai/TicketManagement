@@ -53,7 +53,7 @@ public class TicketCreationDAO {
 		// return false;
 	}
 
-	public boolean ticketUpdation(String emailId, int ticketId, String description) throws PersistenceException {
+	public boolean ticketUpdation(int ticketId, String description) throws PersistenceException {
 		if (ticketDAO.getStatusForId(ticketId) != "close") {
 			String sql = "update ticket_transactions set description=?, status='In progress' where id=?";
 			Object[] params = { description, ticketId };

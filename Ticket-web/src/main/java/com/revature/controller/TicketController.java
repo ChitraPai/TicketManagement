@@ -39,32 +39,28 @@ public class TicketController {
 		return "redirect:/index.jsp";
 	}
 	
-	
-	@GetMapping("/updation")
-	public String Updation()
+	@GetMapping("/update")
+	public String update(HttpSession session,@RequestParam("ticketId") Integer ticketId)
 	{
+		user=(User) session.getAttribute("LOGGED_IN_USER");
+		session.setAttribute("ticketId", ticketId);
 		return "../TicketUpdation.jsp";
 			
-	}
+	}		
 	
-	@GetMapping("/ticketupdation")
-	public String ticketUpdation(@RequestParam("ticketId") Integer ticketId,@RequestParam("description") String description,HttpSession session)
+	
+	@GetMapping("/updateticket")
+	public String ticketUpdation(@RequestParam("description") String description,HttpSession session)
 			throws ServiceException {
-		user=(User) session.getAttribute("LOGGED_IN_USER");
-		ticketService.ticketUpdation(user.getEmailId(),ticketId, description);
+		int ticketId=(int) session.getAttribute("ticketId");
+		ticketService.ticketUpdation(ticketId, description);
 		return "redirect:/index.jsp";
 	}
 	
-	@GetMapping("/close")
-	public String close()
-	{
-		return "../CloseTicket.jsp";
-	}
 	
-	@GetMapping("/closeTicket")
+	@GetMapping("/closeticket")
 	public String closeTicket(@RequestParam("ticketId") Integer ticketId,HttpSession session)
 			throws ServiceException {
-		user=(User) session.getAttribute("LOGGED_IN_USER");
 		ticketService.closeTicket(ticketId);
 		return "redirect:/index.jsp";
 	}
@@ -79,39 +75,43 @@ public class TicketController {
 		return "../ViewTickets.jsp";
 	}
 	@GetMapping("/reassign")
-	public String reassign()
+	public String reassign(HttpSession session,@RequestParam("ticketId") Integer ticketId)
 	{
+		employee=(Employee) session.getAttribute("LOGGED_IN_USER");
+		session.setAttribute("ticketId", ticketId);
 		return "../TicketReassignment.jsp";
 	}
 	@GetMapping("/reassigntickets")
-	public String reassignTicket(HttpSession session,@RequestParam("ticketId") Integer ticketId,@RequestParam("employeeId")Integer employeeId)
+	public String reassignTicket(HttpSession session,@RequestParam("employeeId")Integer employeeId)
 			throws ServiceException {
-		employee=(Employee) session.getAttribute("LOGGED_IN_USER");
-		ticketService.ticketReassignment(employee.getEmailId(), ticketId, employeeId);
+		int ticketId=(int) session.getAttribute("ticketId");
+		ticketService.ticketReassignment(ticketId, employeeId);
 		return "../index.jsp";
 	}
 	
 	@GetMapping("/resolve")
-	public String resolve()
+	public String resolve(HttpSession session,@RequestParam("ticketId") Integer ticketId)
 	{
+		employee=(Employee) session.getAttribute("LOGGED_IN_USER");
+		session.setAttribute("ticketId", ticketId);
 		return "../ResolveTicket.jsp";
 	}
 	
 	@GetMapping("/resolveticket")
-	public String resolveTicket(HttpSession session,@RequestParam("ticketId")Integer ticketId,@RequestParam("solution")String solution)
+	public String resolveTicket(HttpSession session,@RequestParam("solution")String solution)
 			throws ServiceException {
-		employee=(Employee) session.getAttribute("LOGGED_IN_USER");
-		ticketService.resolveTicket(employee.getEmailId(),ticketId, solution);
+		int ticketId=(int) session.getAttribute("ticketId");
+		ticketService.resolveTicket(ticketId, solution);
 		return "../index.jsp";
 	}
 	
-	@GetMapping("/viewassignedtickets")
+	@GetMapping
 	public String viewAssignedTickets(HttpSession session,ModelMap modelMap)
 			throws ServiceException {
 		employee= (Employee) session.getAttribute("LOGGED_IN_USER");
 		List<TicketTransaction> list=ticketService.viewAssignedTickets(employee.getEmailId());
 		modelMap.addAttribute("list",list);
-		return "../ViewAssignedTickets.jsp";
+		return "/ViewAssignedTickets.jsp";
 	}
 	
 	@GetMapping("/delete")

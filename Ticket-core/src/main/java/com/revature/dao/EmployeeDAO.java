@@ -108,4 +108,15 @@ public class EmployeeDAO implements DAO<Employee> {
 			throw new PersistenceException("Given employee id does not exist", e);
 		}
 	}
+	
+	public Integer getRoleIdForEmail(String emailId) throws PersistenceException {
+		try {
+			String sql = "select role_id from employees where email_id=?";
+			Object[] params = { emailId};
+			return jdbcTemplate.queryForObject(sql, params, Integer.class);
+		} catch (EmptyResultDataAccessException e) {
+			throw new PersistenceException("Given email id is incorrect", e);
+		}
+
+	}
 }

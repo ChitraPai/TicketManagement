@@ -28,12 +28,12 @@ public class TicketService {
 		}
 	}
 
-	public void ticketUpdation(String emailId, int ticketId, String description)
+	public void ticketUpdation(int ticketId, String description)
 			throws ServiceException {
 					try {
 				UserValidator.validateIfNullTicketId(ticketId);
 				UserValidator.validateForTicketUpdation(description);
-				ticketCreation.ticketUpdation(emailId, ticketId, description);
+				ticketCreation.ticketUpdation(ticketId, description);
 			} catch (ValidationException | DataAccessException | PersistenceException e) {
 				throw new ServiceException(" ", e);
 			}
@@ -60,24 +60,24 @@ public class TicketService {
 		}
 	
 
-	public void ticketReassignment(String emailId,Integer ticketId, Integer employeeId)
+	public void ticketReassignment(Integer ticketId, Integer employeeId)
 			throws ServiceException {
 	
 			try {
 				UserValidator.validateIfNullTicketId(ticketId);
 				UserValidator.validateIfNullEmployeeId(employeeId);
-				ticketAssignment.ticketReassignment(emailId, ticketId, employeeId);
+				ticketAssignment.ticketReassignment(ticketId, employeeId);
 			} catch (DataAccessException | ValidationException | PersistenceException e) {
 				throw new ServiceException(" ", e);
 			}
 		}
 	
 
-	public void resolveTicket(String emailId,Integer ticketId, String solution) throws ServiceException {
+	public void resolveTicket(Integer ticketId, String solution) throws ServiceException {
 		try {
 			UserValidator.validateIfNullTicketId(ticketId);
 			UserValidator.validateForResolvingTicket(solution);
-			ticketAssignment.resolveTicket(emailId,ticketId, solution);
+			ticketAssignment.resolveTicket(ticketId, solution);
 		} catch (DataAccessException | ValidationException | PersistenceException e) {
 			throw new ServiceException(" ", e);
 		}

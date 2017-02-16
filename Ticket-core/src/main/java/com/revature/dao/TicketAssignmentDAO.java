@@ -22,11 +22,9 @@ public class TicketAssignmentDAO {
 	JdbcTemplate jdbcTemplate = ConnectionUtil.getJdbcTemplate();
 	Logger logger = Logger.getLogger(TicketAssignmentDAO.class.getName());
 
-	public void ticketReassignment(String emailId, Integer ticketId, Integer employeeId) throws PersistenceException {
+	public void ticketReassignment(Integer ticketId, Integer employeeId) throws PersistenceException {
 		try {
-			int id = employeeDAO.getEmployeeIdForEmail(emailId);
-			if ((id == ticketDAO.listByTicketId(ticketId).getAssignedEmployeeId().getId())
-					&& (ticketDAO.listByTicketId(ticketId).getStatus() != "close")) {
+		if (ticketDAO.listByTicketId(ticketId).getStatus() != "close") {
 				String sql = "update ticket_transactions set assigned_employee_id=? where id=?";
 				Object[] params = { employeeId, ticketId };
 				jdbcTemplate.update(sql, params);
@@ -46,26 +44,23 @@ public class TicketAssignmentDAO {
 		}
 	}
 
-	public boolean replyToTicket(String emailId, Integer ticketId, String solution) throws PersistenceException {
+	public boolean replyToTicket(Integer ticketId, String solution) throws PersistenceException {
 		try {
-			if (ticketDAO.listByTicketId(ticketId).getAssignedEmployeeId().getId() == employeeDAO
-					.getEmployeeIdForEmail(emailId)) {
-				if (ticketDAO.listByTicketId(ticketId).getStatus() != "close") {
+			if (ticketDAO.listByTicketId(ticketId).getStatus() != "close") {
 					String sql = "insert into issue_solutions(ticket_id,solution) values(?,?)";
 					Object[] params = { ticketId, solution };
 					jdbcTemplate.update(sql, params);
 					return true;
 				}
-			}
-		} catch (EmptyResultDataAccessException e) {
+					} catch (EmptyResultDataAccessException e) {
 			throw new PersistenceException("", e);
 		}
 		return false;
 	}
 
-	public void resolveTicket(String emailId, Integer ticketId, String solution) throws PersistenceException {
+	public void resolveTicket(Integer ticketId, String solution) throws PersistenceException {
 		try {
-			if (replyToTicket(emailId, ticketId, solution)) {
+			if (replyToTicket(ticketId, solution)) {
 				String sql = "update ticket_transactions set resolved_date=now(),status='resolved' where id=?";
 				Object[] params = { ticketId };
 				jdbcTemplate.update(sql, params);

@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.revature.dao.EmployeeDAO;
+import com.revature.exception.PersistenceException;
 import com.revature.exception.ServiceException;
 import com.revature.model.Employee;
+import com.revature.model.Role;
 import com.revature.model.User;
 import com.revature.service.UserService;
 
@@ -19,6 +22,8 @@ import com.revature.service.UserService;
 public class LoginController {
 	User user = new User();
 	Employee employee=new Employee();
+	Role role=new Role();
+	EmployeeDAO employeeDAO=new EmployeeDAO();
 	UserService userService = new UserService();
 
 	@GetMapping("/register")
@@ -46,7 +51,6 @@ public class LoginController {
 			if(userService.loginForUser(emailId, password)){
 				session.setAttribute("LOGGED_IN_USER", user);
 			}
-			modelMap.addAttribute("emailId", emailId);
 			return "../UserTicketOptions.jsp";
 		} catch (ServiceException e) {
 			modelMap.addAttribute("ERROR", e.getMessage());
@@ -61,16 +65,21 @@ public class LoginController {
 		try {
 			employee.setEmailId(emailId);
 			employee.setPassword(password);
+			int roleId=employeeDAO.getRoleIdForEmail(emailId);
+			role.setId(roleId);
+			employee.setRoleId(role);
 			boolean emp = userService.loginForEmployee(emailId, password);
 			if(emp){
 			session.setAttribute("LOGGED_IN_USER", employee);
 			}
-			modelMap.addAttribute("emailId", emailId);
-			return "../EmployeeTicketOptions.jsp";
+			if(roleId==1){
+				return "../AdminTicketOptions";
+			}
+			return "../tickets";
 		}
-		catch (ServiceException e) {
+		catch (ServiceException | PersistenceException e) {
 			modelMap.addAttribute("ERROR", e.getMessage());
 		return "../EmployeeLogin.jsp";
-	}
+	} 
 }
 }

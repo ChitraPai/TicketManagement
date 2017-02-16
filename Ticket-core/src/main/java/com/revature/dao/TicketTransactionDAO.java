@@ -75,14 +75,17 @@ public class TicketTransactionDAO {
 			ticket.setSubject(rs.getString("subject"));
 			ticket.setDescription(rs.getString("description"));
 			ticket.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
-			ticket.setResolvedDate(rs.getTimestamp("resolved_date").toLocalDateTime());
+			Timestamp resDate = rs.getTimestamp("resolved_date");
+			if (resDate!=null){
+			ticket.setResolvedDate(resDate.toLocalDateTime());
+			}
 			ticket.setStatus(rs.getString("status"));
 			return ticket;
 		});
 	}
 
 	public List<TicketTransaction> listByAssignedEmployeeId(int id) {
-		String sql = "select id,subject,description,created_date,resolved_date,status from ticket_transactions where assigned_employee_id=?";
+		String sql = "select id,subject,description,created_date,resolved_date,status from ticket_transactions where assigned_employee_id=? and active=1 and status<>'close'";
 		return ticketView(id, sql);
 	}
 
